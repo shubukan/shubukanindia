@@ -2,9 +2,11 @@
 const nextConfig = {
   // Lets the dev server (HMR websocket, Server Actions/RSC fetches) fully
   // trust requests coming from the phone over LAN — without this, the page
-  // loads over http://192.168.0.104:3000 but hot reload and anything doing
+  // loads over http://<pc-lan-ip>:3000 but hot reload and anything doing
   // a cross-origin fetch back to the dev server gets silently blocked.
-  allowedDevOrigins: ["192.168.0.104"],
+  // This IP can change (DHCP lease renewal, router reboot) — check with
+  // `ipconfig` if the phone stops getting live updates.
+  allowedDevOrigins: ["192.168.0.100"],
   images: {
     remotePatterns: [
       {

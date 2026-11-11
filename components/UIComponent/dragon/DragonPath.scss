@@ -1,0 +1,126 @@
+// components/UIComponent/dragon/DragonPath.scss
+//
+// Production styling for the ported dragon/overlap-divs.html prototype.
+// Class names are prefixed (dragon-path-*) since the prototype used
+// generic names (.box, .stage, .attachment) that risk colliding with
+// other components in this codebase's global (non-module) CSS.
+//
+// Debug-only pieces from the prototype were dropped here since this now
+// renders on the real homepage: the red/yellow/white/black orientation
+// quadrant, the faint box border, and the blue/pink attachment-a/b debug
+// borders. The dashed SVG track guide is also hidden by default (flip
+// $show-guide below if you want it back for debugging).
+
+.dragon-path-stage {
+  // These exact numbers (133% / -43% / -5%) are copied verbatim from the
+  // `.d-path svg` test rig (globals.css / app/page.js's commented-out
+  // <section className="d-path">) that was used to find the correct
+  // on-screen alignment by hand - not re-derived, ported as-is so this
+  // reproduces exactly what was confirmed, not an approximation of it.
+  // Percentages resolve against .dragon-section's box (globals.css),
+  // which is what "752" / "1449" below (FRAME_WIDTH/FRAME_HEIGHT in
+  // DragonPath.jsx) are relative to as well - same reference on both
+  // sides, so the animated chain lines up with this exactly.
+  position: absolute;
+  width: 143%;
+  // top: -43%;
+  // left: -5%;
+  // transform: rotateZ(-20deg);
+  top: -48%;
+  left: -12%;
+  transform: rotateZ(-13deg);
+  aspect-ratio: 752 / 1449;
+
+  pointer-events: auto; // re-enabled here so clicks reach it even though
+  // the wrapping .dragon-section (globals.css) sets
+  // pointer-events: none on everything else
+}
+
+@media (max-width: 800px) {
+  .dragon-path-stage {
+    top: -31%;
+    left: -16%;
+  }
+
+  // Same story for CSS filter: it forces per-layer software rasterization,
+  // and there are ~40 of these moving/rotating at once. Disabling it here
+  // is the actual smoothness fix for mobile - raising BASE_CONFIG.frameRate
+  // only changes how often positions are recalculated, not how expensive
+  // each paint is.
+  .dragon-path-part-image {
+    // filter: none;
+    // opacity: 100%;
+  }
+}
+
+.dragon-path-guide {
+  display: block; // set to `display: none` to hide the track shape
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible; // the path deliberately draws outside the stage's own
+  // box on purpose (see .dragon-path-stage above) - SVG clips to its own
+  // box by default, this turns that off so the guide shows the true extent
+  pointer-events: none;
+
+  path {
+    fill: none;
+    // stroke: #0055ff; // matches the .d-path test rig's stroke exactly
+    stroke-width: 1;
+    stroke-dasharray: 4 6;
+  }
+}
+
+.dragon-path-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  cursor: pointer; // only does something once the chain has stopped
+}
+
+.dragon-path-part-image {
+  filter: grayscale(10%) sepia(45%);
+  opacity: 90%;
+  // border: 1px solid red;
+  // background: #ffffff87;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  // object-fit: contain;
+  display: none; // toggled on once a src is assigned
+  pointer-events: none;
+  user-select: none;
+
+  object-fit: cover;
+  overflow: visible;
+}
+
+// :first-child was matching EVERY box's image (each is the sole/first
+// child of its own .dragon-path-box), not just the head - data-part is
+// the reliable way to single out the head image specifically.
+.dragon-path-part-image[data-part="head"] {
+  scale: 170%;
+}
+
+.dragon-path-part-image[data-part="tail"] {
+  scale: 330%;
+  margin-left: 90%;
+  padding-bottom: 20%;
+}
+
+// Attachments hung off the last div of Section A / Section B (the legs).
+// Positioned so their TOP-CENTER lands exactly on the host div's center
+// point; they inherit the host's rotation since they're normal children
+// of it.
+.dragon-path-attachment {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 0%;
+  box-sizing: border-box;
+  pointer-events: none;
+}

@@ -19,7 +19,7 @@ export const metadata = {
     "nunchak",
     "nunchaku",
     "nanchak",
-    "nanchaku",
+    "nunchaku",
     "tonfa",
     "kusarigama",
     "sai",
