@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Amarante&family=Andika&family=Bellefair&family=Capriola&family=Flamenco&family=Forum&family=Fredericka+the+Great&family=GFS+Neohellenic&family=Philosopher&family=Pompiere&family=Tenali+Ramakrishna&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Amarante&family=Andika&family=Bellefair&family=Capriola&family=Flamenco&family=Forum&family=Fredericka+the+Great&family=GFS+Neohellenic&family=Philosopher&family=Pompiere&family=Tenali+Ramakrishna&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Faster+One&family=Finlandica&family=Foldit&family=Fredericka+the+Great&family=Gemunu+Libre&family=Geo&family=Lekton&family=Lexend+Peta&family=Lexend+Tera&family=Martian+Mono&family=MuseoModerno&family=Orbit&family=Rubik+Dirt&family=Shippori+Antique&family=Tourney&family=Train+One&family=Tulpen+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Faster+One&family=Finlandica&family=Foldit&family=Fredericka+the+Great&family=Gemunu+Libre&family=Geo&family=Lekton&family=Lexend+Peta&family=Lexend+Tera&family=Martian+Mono&family=MuseoModerno&family=Orbit&family=Rubik+Dirt&family=Shippori+Antique&family=Tourney&family=Train+One&family=Tulpen+One&display=swap");
 
 @import "tailwindcss";
 
 @font-face {
   font-family: "Yoppa_fude";
-  src: url("/jap_font/Yoppa_fude.woff2") format("woff2"),
+  src:
+    url("/jap_font/Yoppa_fude.woff2") format("woff2"),
     url("/jap_font/Yoppa_fude.woff") format("woff");
   font-weight: normal;
   font-style: normal;
@@ -222,7 +223,7 @@ select:-webkit-autofill:focus {
 @keyframes notFound {
   0% {
     filter: opacity(0);
-    transform: scale(.8);
+    transform: scale(0.8);
   }
 
   50% {
@@ -233,22 +234,52 @@ select:-webkit-autofill:focus {
     filter: opacity(1);
     transform: scale(1);
   }
-
 }
-
 
 /* Home style */
 .gg {
-  color: #DE3614 #BE3218 #A64B37 #D9C8A9 #2A2727 #403D3C #BFB2AA #88807E #000000 #FFFDDE #EBE0D6 #1C1A17 #A61B1B #C53A3A #2A2A2A #F5E9D8 #FAF3E7 #CCBFA6 #C6A75E;
+  color: #de3614 #be3218 #a64b37 #d9c8a9 #2a2727 #403d3c #bfb2aa #88807e #000000 #fffdde #ebe0d6 #1c1a17 #a61b1b #c53a3a #2a2a2a #f5e9d8 #faf3e7 #ccbfa6 #c6a75e;
 }
 
 .Home {
   max-width: 1080px;
   width: 100%;
   padding: 170px 100px 234px;
-  font-family: 'Bellefair', serif;
+  font-family: "Bellefair", serif;
   position: relative;
   gap: 20px;
+}
+
+.d-path {
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 752/1449;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.d-path svg {
+  position: absolute;
+  width: 133%;
+  top: -43%;
+  left: -5%;
+}
+
+/* section 0 - the animated dragon overlay (DragonPath). Matches .d-path
+   above exactly (same width:100%/aspect-ratio, no top/left/right/padding -
+   both are the first child of .Home, so they land at the identical static
+   position) - that's the tested rig this now reproduces; DragonPath.scss's
+   .dragon-path-stage is the equivalent of .d-path svg. */
+.dragon-section {
+  /* mix-blend-mode: color-burn; */
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 752 / 1449;
+  z-index: 0;
+  pointer-events: none;
+  /* DragonPath's own stage re-enables this - see DragonPath.scss */
 }
 
 .Home p {
@@ -309,7 +340,7 @@ select:-webkit-autofill:focus {
 
 .value-kanji {
   font-size: 64px;
-  color: #1C1A17;
+  color: #1c1a17;
   text-shadow: 0px 1px 3px #be311850;
   mix-blend-mode: color-burn;
 }
@@ -323,7 +354,7 @@ select:-webkit-autofill:focus {
 
 .line-vert {
   height: 60%;
-  background: linear-gradient(180deg, #2A2727, #be311800);
+  background: linear-gradient(180deg, #2a2727, #be311800);
   mix-blend-mode: color-burn;
 }
 
@@ -380,7 +411,7 @@ select:-webkit-autofill:focus {
   margin-bottom: -5px;
   text-transform: uppercase;
   letter-spacing: 10%;
-  color: #1C1A17;
+  color: #1c1a17;
 }
 
 .gallery-nav {
@@ -391,7 +422,7 @@ select:-webkit-autofill:focus {
 .link {
   font-size: 16px;
   letter-spacing: 6%;
-  color: #DE3614;
+  color: #de3614;
 }
 
 .collage {
@@ -429,7 +460,6 @@ select:-webkit-autofill:focus {
   object-fit: cover;
   border-radius: 4px;
 }
-
 
 .p1 {
   z-index: 4;
@@ -553,7 +583,7 @@ h3.journal-title,
 }
 
 .journal-card {
-  border-bottom: 2px solid #BFB2AA;
+  border-bottom: 2px solid #bfb2aa;
   border-radius: 10px 0 0 10px;
   overflow: hidden;
 }
@@ -730,13 +760,20 @@ h3.journal-title,
   }
 
   .journal-card {
-    border-bottom: 1px solid #BFB2AA;
+    border-bottom: 1px solid #bfb2aa;
   }
 }
 
 @media (max-width: 500px) {
   .Home {
     padding: 100px 30px 48px;
+  }
+
+  .d-path svg {
+    position: absolute;
+    width: 133%;
+    top: -30%;
+    left: -3%;
   }
 
   .Home p {

@@ -1,6 +1,7 @@
 // app/page.js
 import Script from "next/script";
 import Collage from "@/components/Gallery/Collage";
+import DragonPath from "@/components/UIComponent/dragon/DragonPath";
 import { shubukan_api } from "@/config";
 
 export const metadata = {
@@ -82,7 +83,6 @@ async function getLatestPosts() {
 
 export default async function page() {
   const posts = await getLatestPosts();
-  console.log(posts);
 
   function formatPostDate(dateStr) {
     if (!dateStr) return "";
@@ -132,6 +132,26 @@ export default async function page() {
       />
 
       <div className="Home w-full flex flex-col justify-start items-center">
+        {/* section 0 */}
+        <section className="dragon-section">
+          <DragonPath />
+        </section>
+
+        {/* .d-path was the hand-positioned test rig used to find the
+            133% / -43% / -5% alignment above - now ported into
+            DragonPath.scss's .dragon-path-stage, so this is redundant
+            with the live component. Left here, commented, for reference /
+            comparison if the alignment ever needs re-checking by eye. */}
+        {/* <section className="d-path">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 752 1449" fill="none">
+            <path
+              d="M387.389 534.512C351.625 611.43 387.389 693.486 485.389 731.511C550.5 756.775 577.889 778.481 577.889 843.011C577.889 902.011 522.889 934.099 522.889 992.011C522.889 1105.01 604.313 1106.65 646.889 1181.51C679.517 1238.88 658.579 1321.06 625.389 1375.51C534.02 1525.4 30.4596 1430.73 14.3893 1181.51C5.91842 1050.14 136.624 1057.58 153.389 927.011C169.889 798.511 -7.88855 755.697 1.88929 626.511C18.3893 408.511 259.077 484.486 368.389 185.511C420.5 42.9865 583.41 -79.0698 698.389 68.5114C895.889 322.011 472.014 352.512 387.389 534.512Z"
+              stroke="#0055FF"
+              strokeWidth="1"
+            />
+          </svg>
+        </section> */}
+
         {/* section 1 */}
         <section className="hero-section flex flex-col justify-start items-center">
           <div className="hero-img-holder">
@@ -195,7 +215,7 @@ export default async function page() {
         </section>
 
         {/* section 3 */}
-        <section className="ways-section w-full flex flex-col items-center justify-start ">
+        <section className="ways-section w-full flex flex-col items-center justify-start">
           <h2 className="heading heading--way font-(family-name:--font-amarante)">
             The Shubukan Way
           </h2>

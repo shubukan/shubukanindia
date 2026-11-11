@@ -1,13 +1,31 @@
 // components/KarateAndKobudo/KarateAndKobudo.jsx
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ImageWithFallback } from "./ImageWithFallback";
 import "./KarateAndKobudo.scss";
 
+const weaponSectionId = (weapon) => `kobudo-${weapon.toLowerCase()}`;
+
 export default function KarateAndKobudo() {
+  const [kobudoView, setKobudoView] = useState("all"); // "all" | "weapon"
+  const [scrollTarget, setScrollTarget] = useState(null);
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
+
+  // After switching to weapon view, scroll to the requested weapon's list
+  useEffect(() => {
+    if (kobudoView !== "weapon" || !scrollTarget) return;
+    const el = document.getElementById(weaponSectionId(scrollTarget));
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setScrollTarget(null);
+  }, [kobudoView, scrollTarget]);
+
+  const showWeaponKatas = (weapon) => {
+    setKobudoView("weapon");
+    setScrollTarget(weapon);
+  };
 
   const kataList = [
     "Fukyu Gata Ichi",
@@ -66,6 +84,135 @@ export default function KarateAndKobudo() {
     "Nunfa",
   ];
 
+  // Kobudo katas in the original handwritten order. Each kata is tagged with
+  // its weapon only for the weapon-wise view; the default view keeps this order.
+  const kobudoKataList = [
+    { name: "Oshiro no Kon", weapon: "Bo" },
+    { name: "Tenryu no Kon", weapon: "Bo" },
+    { name: "Tsunakake no Kon", weapon: "Bo" },
+    { name: "Shushi no Kon Sho", weapon: "Bo" },
+    { name: "Shushi no Kon Dai", weapon: "Bo" },
+    { name: "Shushi no Kon Ko", weapon: "Bo" },
+    { name: "Sakugawa no Kon Sho", weapon: "Bo" },
+    { name: "Sakugawa no Kon Chu", weapon: "Bo" },
+    { name: "Sakugawa no Kon Dai", weapon: "Bo" },
+    { name: "Sakugawa no Kon Ko", weapon: "Bo" },
+    { name: "Shubu no Kon Sho", weapon: "Bo" },
+    { name: "Chikin Bo Ichi", weapon: "Bo" },
+    { name: "Chikin Bo Ni", weapon: "Bo" },
+    { name: "Hakutaru no Kon Sho", weapon: "Bo" },
+    { name: "Urasoe no Kon", weapon: "Bo" },
+    { name: "Tsuyoshi no Kon", weapon: "Bo" },
+    { name: "Choun no Kon", weapon: "Bo" },
+    { name: "Gusan", weapon: "Gusan" },
+    { name: "Eku", weapon: "Eku" },
+    { name: "Tsoeshi no Kon Sho", weapon: "Bo" },
+    { name: "Matsumura no Sai Ichi", weapon: "Sai" },
+    { name: "Matsumura no Sai Ni", weapon: "Sai" },
+    { name: "Tawada no Sai", weapon: "Sai" },
+    { name: "Chatan Yara no Sai", weapon: "Sai" },
+    { name: "Hamahiga no Sai", weapon: "Sai" },
+    { name: "Yaka-a no Sai", weapon: "Sai" },
+    { name: "Kozo no Sanbon Sai", weapon: "Sai" },
+    { name: "Yara Guwa no Tunfa", weapon: "Tonfa" },
+    { name: "Maezato Guwa no Nunchaku", weapon: "Nunchaku" },
+    { name: "Shubu no Nunchaku", weapon: "Nunchaku" },
+    { name: "Toyama no Nicho Gama", weapon: "Kama" },
+    { name: "Kanegawa no Nicho Gama Sho", weapon: "Kama" },
+    { name: "Kanegawa no Nicho Gama Dai", weapon: "Kama" },
+    { name: "Shubu no Nicho Gama", weapon: "Kama" },
+    { name: "Hakutaru no Kon Dai", weapon: "Bo" },
+    { name: "Tsoeshi no Kon Dai", weapon: "Bo" },
+    { name: "Hanta Gawa no Kon Sai", weapon: "Sai" },
+    { name: "Chikin Shita Haku no Sai", weapon: "Sai" },
+    { name: "Tsesoko no Kon", weapon: "Bo" },
+    { name: "Chatan Yara no Kon", weapon: "Bo" },
+    { name: "Chinen Tshichanaka no Kon", weapon: "Bo" },
+    { name: "Tsikiya Naka no Kon", weapon: "Bo" },
+    { name: "Shubu no Tinpe", weapon: "Tinpe" },
+    { name: "Shubu no Kon Dai", weapon: "Bo" },
+    { name: "Hamahiga no Tunfa", weapon: "Tonfa" },
+  ];
+
+  const kobudoWeaponOrder = [
+    "Bo",
+    "Sai",
+    "Tonfa",
+    "Nunchaku",
+    "Kama",
+    "Tinpe",
+    "Eku",
+    "Gusan",
+  ];
+
+  const kobudoKataGroups = kobudoWeaponOrder
+    .map((weapon) => ({
+      weapon,
+      katas: kobudoKataList
+        .filter((kata) => kata.weapon === weapon)
+        .map((kata) => kata.name),
+    }))
+    .filter((group) => group.katas.length > 0);
+
+  const kobudoKataCount = kobudoKataList.length;
+
+  const renderKataTile = (kata, i) => (
+    <li key={kata} className="kk-kata">
+      <span className="kk-kata-num">{String(i + 1).padStart(2, "0")}</span>
+      <span className="kk-kata-name">{kata}</span>
+    </li>
+  );
+
+  const elements = [
+    {
+      kanji: "基本",
+      name: "Kihon Dosa",
+      subtitle: "Basic Techniques",
+      description:
+        "In the study of basics Karateka learn block (uke), strike (uchi), kick (Keri), stance (Tachi/Dachi), Punch (Tsuki).",
+      details: [
+        {
+          label: "Stances",
+          value:
+            "Siko Dachi, Neko Ashi Dachi, Zenkutsu Dachi, Kosa Dachi, Kokutsu Dachi",
+        },
+        {
+          label: "Blocks",
+          value: "Age uke, Soto uke, Uchi uke, Gedan uke, Shuto uke",
+        },
+        { label: "Kicks", value: "Mae keri, Mawashi keri, Kansetsu keri" },
+      ],
+    },
+    {
+      kanji: "型",
+      name: "Kata",
+      subtitle: "Predesigned Forms",
+      description:
+        "Kata is predesigned form using kihons. There are lot of katas in Shubukan School. We practice above 50 katas in shubukan Shorin Ryu.",
+      details: [
+        {
+          label: "54+ Katas",
+          value:
+            "Including Fukyugata, Pinan, Passai, Kushanku, Rohai, and Wanshu",
+        },
+      ],
+    },
+    {
+      kanji: "組手",
+      name: "Kumite",
+      subtitle: "Sparring & Fighting",
+      description:
+        "Kumite means sparring or fighting. Shubukan maintain traditional old style full contact kumite.",
+      details: [
+        {
+          label: "Self Defense",
+          value:
+            "With care Shubukan focus on self defense and teaches its members the true practical application of katas in effective way.",
+        },
+      ],
+    },
+  ];
+
   const weapons = [
     {
       name: "Bo",
@@ -103,174 +250,228 @@ export default function KarateAndKobudo() {
   ];
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto text-center pt-18">
-          <h1 className="text-8xl mb-6">Karate</h1>
-          <p className="jap text-5xl mb-8 text-neutral-800">空手</p>
-          <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-            Karate means Empty hand. Karate makes its practitioner physically
-            and mentally strong along with strong ethical and moral values.
-            Basically karateka use legs and hand parts for block, strike, hold,
-            throw etc.
-          </p>
+    <main className="kk-page">
+      {/* Karate hero */}
+      <section className="kk-hero">
+        <h1 className="kk-title">Karate</h1>
+        <span className="kk-kanji" lang="ja">
+          空手
+        </span>
+        <img
+          src="/assets/home/red_line_1.webp"
+          alt=""
+          className="underline underline--1 remove-bg"
+        />
+        <p className="kk-body kk-lead">
+          Karate means Empty hand. Karate makes its practitioner physically and
+          mentally strong along with strong ethical and moral values. Basically
+          karateka use legs and hand parts for block, strike, hold, throw etc.
+        </p>
+      </section>
+
+      {/* Three elements */}
+      <section className="kk-section kk-center">
+        <h2 className="heading heading--way kk-amarante">
+          Three Elements of Karate
+        </h2>
+        <img
+          src="/assets/home/red_line_2.webp"
+          alt=""
+          className="underline underline--2 remove-bg"
+        />
+
+        <div className="kk-elements">
+          {elements.map((element, index) => (
+            <div key={element.name} className="kk-element-wrap">
+              {index > 0 && (
+                <div className="line-vert line-vert--2 kk-element-line">
+                  <div className="line-in"></div>
+                </div>
+              )}
+              <div className="kk-element">
+                <span className="value-kanji kk-kouzan" lang="ja">
+                  {element.kanji}
+                </span>
+                <h3 className="value-eng kk-amarante">{element.name}</h3>
+                <span className="kk-subtitle">{element.subtitle}</span>
+                <p className="kk-text">{element.description}</p>
+                <dl className="kk-details">
+                  {element.details.map((detail) => (
+                    <div key={detail.label}>
+                      <dt className="kk-detail-label">{detail.label}</dt>
+                      <dd className="kk-text kk-text--sm">{detail.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Three Elements Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl mb-4">Three Elements of Karate</h2>
-            <p className="text-neutral-600 text-lg">
-              KihonDosa, Kata and Kumite
-            </p>
+      {/* Karate kata list */}
+      <section className="kk-section">
+        <div className="kk-section-nav">
+          <div className="kk-section-title">
+            <h2 className="heading heading--sm kk-amarante">Kata Curriculum</h2>
+            <span className="kk-count">
+              All {kataList.length} katas of Shubukan Shorin Ryu
+            </span>
+            <img
+              src="/assets/home/red_line_3.webp"
+              alt=""
+              className="underline underline--3 remove-bg"
+            />
           </div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {/* KihonDosa */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border-t-4 border-neutral-900">
-              {/* <div className="w-12 h-12 bg-neutral-900 rounded-lg mb-6"></div> */}
-              <h3 className="text-2xl mb-2">KihonDosa</h3>
-              <p className="text-neutral-500 mb-6">Basic Techniques</p>
-              <p className="text-neutral-700 mb-6">
-                In the study of basics Kartateka learn block (uke), strike
-                (uchi), kick (Keri), stance (Tachi/Dachi), Punch (Tsuki).
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-neutral-500 mb-1">Stances</p>
-                  <p className="text-sm text-neutral-700">
-                    Siko Dachi, Neko Ashi Dachi, Zenkutsu Dachi, Kosa Dachi,
-                    Kokutsu Dachi
-                  </p>
-                </div>
-                <div>
-                  <p className="text-neutral-500 mb-1">Blocks</p>
-                  <p className="text-sm text-neutral-700">
-                    Age uke, Soto uke, Uchi uke, Gedan uke, Shuto uke
-                  </p>
-                </div>
-                <div>
-                  <p className="text-neutral-500 mb-1">Kicks</p>
-                  <p className="text-sm text-neutral-700">
-                    Mae keri, Mawashi keri, Kansetsu keri
-                  </p>
-                </div>
-              </div>
-            </div>
+        <ol className="kk-kata-grid">
+          {kataList.map((kata, i) => renderKataTile(kata, i))}
+        </ol>
+      </section>
 
-            {/* Kata */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border-t-4 border-neutral-900">
-              {/* <div className="w-12 h-12 bg-neutral-900 rounded-lg mb-6"></div> */}
-              <h3 className="text-2xl mb-2">Kata</h3>
-              <p className="text-neutral-500 mb-6">Predesigned Forms</p>
-              <p className="text-neutral-700 mb-6">
-                Kata is predesigned form using kihons. There are lot of katas in
-                Shubukan School. We practice above 50 katas in shubukan Shorin
-                Ryu.
-              </p>
-              <div className="inline-block px-3 py-1 bg-neutral-100 rounded-md mb-4">
-                <span className="text-sm">54+ Katas</span>
-              </div>
-              <p className="text-sm text-neutral-600">
-                Including Fukyugata, Pinan, Passai, Kushanku, Rohai, and Wanshu
-              </p>
-            </div>
+      {/* Kobudo hero */}
+      <section className="kk-hero kk-hero--kobudo">
+        <h2 className="kk-title">Kobudo</h2>
+        <span className="kk-kanji" lang="ja">
+          古武道
+        </span>
+        <img
+          src="/assets/home/red_line_1.webp"
+          alt=""
+          className="underline underline--1 remove-bg"
+        />
+        <p className="kk-body kk-lead">
+          Shubukan has many kobudo katas also. We shubukani studies these kata
+          in a practical and applicable way. There are many weapons we use in
+          shubukan school.
+        </p>
+      </section>
 
-            {/* Kumite */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border-t-4 border-neutral-900">
-              {/* <div className="w-12 h-12 bg-neutral-900 rounded-lg mb-6"></div> */}
-              <h3 className="text-2xl mb-2">Kumite</h3>
-              <p className="text-neutral-500 mb-6">Sparring & Fighting</p>
-              <p className="text-sm text-neutral-700 mb-6">
-                Kumite means sparring of fighting. Shubukan maintain traditional
-                old style full contact kumite.
-              </p>
-              <p className="text-sm text-neutral-700">
-                With care Shubukan focus on self defense and teaches its members
-                the true practical application of katas in effective way.
-              </p>
-            </div>
-          </div>
+      {/* Weapons */}
+      <section className="kk-section kk-center">
+        <h2 className="heading heading--way kk-amarante">Weapons</h2>
+        <img
+          src="/assets/home/red_line_2.webp"
+          alt=""
+          className="underline underline--2 remove-bg"
+        />
 
-          {/* Kata List */}
-          <div className="bg-white p-8 rounded-lg shadow-sm">
-            <div className="mb-8">
-              <h3 className="text-3xl mb-2">Complete Kata Curriculum</h3>
-              <p className="text-neutral-500 mb-6">
-                All {kataList.length} katas practiced in Shubukan Shorin Ryu
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {kataList.map((kata, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-4 rounded-lg bg-neutral-50 hover:bg-neutral-100 transition-colors"
-                >
-                  <span className="inline-block px-2 py-0.5 bg-white border border-neutral-300 rounded text-sm shrink-0">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm text-neutral-800">{kata}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="kk-weapons">
+          {weapons.map((weapon) => (
+            <button
+              key={weapon.name}
+              type="button"
+              aria-label={`Show ${weapon.name} katas`}
+              onClick={() => showWeaponKatas(weapon.name)}
+              className="kk-weapon"
+            >
+              <span className="kk-weapon-img">
+                <ImageWithFallback
+                  src={weapon.image}
+                  alt=""
+                  className="remove-bg"
+                />
+              </span>
+              <span className="kk-weapon-name kk-amarante">{weapon.name}</span>
+              <span className="kk-text kk-weapon-desc">
+                {weapon.description}
+              </span>
+              <span className="link kk-amarante kk-weapon-link">
+                View {weapon.name} katas →
+              </span>
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="max-w-5xl mx-auto px-6">
-        {/* <div className="h-px bg-neutral-600"></div> */}
-        <div className="wave"></div>
-      </div>
-
-      {/* Kobudo Section */}
-      <section className="py-20 px-6 sm:pb-[200px]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-8xl mb-6">Kobudo</h1>
-            {/* <p className="jap text-5xl mb-8 text-neutral-800">空手</p> */}
-            <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-              Shubukan has many kobudo katas also. We shubukani studies these
-              kata in a practical and applicable way. There are many weapons we
-              use in shubukan school.
-            </p>
+      {/* Kobudo kata list */}
+      <section className="kk-section">
+        <div className="kk-section-nav">
+          <div className="kk-section-title">
+            <h2 className="heading heading--sm kk-amarante">
+              Kobudo Kata Curriculum
+            </h2>
+            <span className="kk-count">
+              All {kobudoKataCount} kobudo katas of Shubukan
+            </span>
+            <img
+              src="/assets/home/red_line_3.webp"
+              alt=""
+              className="underline underline--3 remove-bg"
+            />
           </div>
 
-          {/* Weapons Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {weapons.map((weapon, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-1"
+          <div
+            role="group"
+            aria-label="Kobudo kata view"
+            className="kk-toggle"
+          >
+            {/* Sliding indicator behind the active option */}
+            <span
+              aria-hidden="true"
+              className={`kk-toggle-pill ${
+                kobudoView === "weapon" ? "kk-toggle-pill--right" : ""
+              }`}
+            />
+            {[
+              { key: "all", label: "All Katas" },
+              { key: "weapon", label: "Weapon Wise" },
+            ].map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                aria-pressed={kobudoView === option.key}
+                onClick={() => setKobudoView(option.key)}
+                className={`kk-toggle-btn ${
+                  kobudoView === option.key ? "kk-toggle-btn--active" : ""
+                }`}
               >
-                <div className="aspect-[4/2] w-full bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-t-lg flex items-center justify-center p-8">
-                  <ImageWithFallback
-                    src={weapon.image}
-                    alt={weapon.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl mb-3">{weapon.name}</h3>
-                  <p className="text-neutral-700">{weapon.description}</p>
-                </div>
-              </div>
+                {option.label}
+              </button>
             ))}
           </div>
         </div>
 
-        <footer className="text-neutral-900 mt-16">
-          <div className="max-w-5xl mx-auto text-center">
-            <p className="text-lg mb-2">Shubukan Shorin Ryu</p>
-            <p className="text-neutral-700">
-              Traditional Okinawan Karate & Kobudo
-            </p>
+        {kobudoView === "all" ? (
+          <ol className="kk-kata-grid">
+            {kobudoKataList.map((kata, i) => renderKataTile(kata.name, i))}
+          </ol>
+        ) : (
+          <div className="kk-groups">
+            {kobudoKataGroups.map((group) => (
+              <div
+                key={group.weapon}
+                id={weaponSectionId(group.weapon)}
+                className="kk-group"
+              >
+                <div className="kk-group-head">
+                  <h3 className="kk-group-name kk-amarante">{group.weapon}</h3>
+                  <span className="kk-group-count">
+                    {group.katas.length}{" "}
+                    {group.katas.length === 1 ? "kata" : "katas"}
+                  </span>
+                </div>
+                <ol className="kk-kata-grid">
+                  {group.katas.map((kata, i) => renderKataTile(kata, i))}
+                </ol>
+              </div>
+            ))}
           </div>
-        </footer>
+        )}
       </section>
+
+      <footer className="kk-footer">
+        <img
+          src="/assets/home/red_line_2.webp"
+          alt=""
+          className="underline underline--2 remove-bg"
+        />
+        <span className="value-eng kk-amarante">Shubukan Shorin Ryu</span>
+        <span className="kk-footer-sub">
+          Traditional Okinawan Karate &amp; Kobudo
+        </span>
+      </footer>
     </main>
   );
 }
