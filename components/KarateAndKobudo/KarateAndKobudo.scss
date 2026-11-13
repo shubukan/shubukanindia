@@ -143,6 +143,43 @@ $cream: $accent8; // #FFFDDE
   text-align: left;
 }
 
+/* ---------- Section divider ----------
+   Two ink strokes fading out from a small red hanko dot. Hidden on desktop,
+   where the generous spacing already separates sections; shown once the
+   layout stacks, so a new section reads clearly on tablets and phones. */
+.kk-divider {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 4px 0 52px;
+}
+
+.kk-divider::before,
+.kk-divider::after {
+  content: "";
+  flex: 0 1 120px;
+  height: 1px;
+  mix-blend-mode: color-burn;
+}
+
+.kk-divider::before {
+  background: linear-gradient(90deg, #be311800, $ink);
+}
+
+.kk-divider::after {
+  background: linear-gradient(90deg, $ink, #be311800);
+}
+
+.kk-divider-seal {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $red;
+  box-shadow: 0 0 0 4px rgba(222, 54, 20, 0.12);
+}
+
 /* ---------- Three elements ---------- */
 .kk-elements {
   width: 100%;
@@ -461,6 +498,15 @@ $cream: $accent8; // #FFFDDE
 }
 
 @media (max-width: 800px) {
+  .kk-divider {
+    display: flex;
+  }
+
+  /* the divider already provides the gap above the Kobudo heading */
+  .kk-divider + .kk-hero--kobudo {
+    margin-top: 0;
+  }
+
   .kk-page .heading--way {
     font-size: 22px;
   }
@@ -562,6 +608,11 @@ $cream: $accent8; // #FFFDDE
   .kk-section-title .underline--3 {
     width: 46%;
     max-width: 170px;
+  }
+
+  /* toggle spans the full width once the header stacks */
+  .kk-toggle {
+    width: 100%;
   }
 
   .kk-page {
