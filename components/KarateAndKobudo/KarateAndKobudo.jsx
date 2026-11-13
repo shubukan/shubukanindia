@@ -104,7 +104,7 @@ export default function KarateAndKobudo() {
     { name: "Urasoe no Kon", weapon: "Bo" },
     { name: "Tsuyoshi no Kon", weapon: "Bo" },
     { name: "Choun no Kon", weapon: "Bo" },
-    { name: "Gusan", weapon: "Gusan" },
+    { name: "Gusan", weapon: "Bo" },
     { name: "Eku", weapon: "Eku" },
     { name: "Tsoeshi no Kon Sho", weapon: "Bo" },
     { name: "Matsumura no Sai Ichi", weapon: "Sai" },
@@ -126,10 +126,12 @@ export default function KarateAndKobudo() {
     { name: "Hanta Gawa no Kon Sai", weapon: "Sai" },
     { name: "Chikin Shita Haku no Sai", weapon: "Sai" },
     { name: "Tsesoko no Kon", weapon: "Bo" },
+    { name: "Shubu no Sai", weapon: "Sai" },
     { name: "Chatan Yara no Kon", weapon: "Bo" },
     { name: "Chinen Tshichanaka no Kon", weapon: "Bo" },
     { name: "Tsikiya Naka no Kon", weapon: "Bo" },
-    { name: "Shubu no Tinpe", weapon: "Tinpe" },
+    { name: "Shubu no Tinpe", weapon: "Other" },
+    { name: "Shubu no Yari", weapon: "Other" },
     { name: "Shubu no Kon Dai", weapon: "Bo" },
     { name: "Hamahiga no Tunfa", weapon: "Tonfa" },
   ];
@@ -140,9 +142,8 @@ export default function KarateAndKobudo() {
     "Tonfa",
     "Nunchaku",
     "Kama",
-    "Tinpe",
     "Eku",
-    "Gusan",
+    "Other", // Tinpe, Yari
   ];
 
   const kobudoKataGroups = kobudoWeaponOrder
@@ -309,6 +310,11 @@ export default function KarateAndKobudo() {
         </div>
       </section>
 
+      {/* Section divider - only shown on smaller screens (see .kk-divider) */}
+      <div className="kk-divider" aria-hidden="true">
+        <span className="kk-divider-seal" />
+      </div>
+
       {/* Karate kata list */}
       <section className="kk-section">
         <div className="kk-section-nav">
@@ -329,6 +335,11 @@ export default function KarateAndKobudo() {
           {kataList.map((kata, i) => renderKataTile(kata, i))}
         </ol>
       </section>
+
+      {/* Section divider - only shown on smaller screens (see .kk-divider) */}
+      <div className="kk-divider" aria-hidden="true">
+        <span className="kk-divider-seal" />
+      </div>
 
       {/* Kobudo hero */}
       <section className="kk-hero kk-hero--kobudo">
@@ -384,6 +395,11 @@ export default function KarateAndKobudo() {
           ))}
         </div>
       </section>
+
+      {/* Section divider - only shown on smaller screens (see .kk-divider) */}
+      <div className="kk-divider" aria-hidden="true">
+        <span className="kk-divider-seal" />
+      </div>
 
       {/* Kobudo kata list */}
       <section className="kk-section">

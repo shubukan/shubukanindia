@@ -1,7 +1,9 @@
 // app/page.js
 import Script from "next/script";
 import Collage from "@/components/Gallery/Collage";
-import DragonPath from "@/components/UIComponent/dragon/DragonPath";
+// Dragon animation is unfinished - disabled for production. To bring it back,
+// uncomment this import and the "section 0" block below.
+// import DragonPath from "@/components/UIComponent/dragon/DragonPath";
 import { shubukan_api } from "@/config";
 
 export const metadata = {
@@ -132,10 +134,11 @@ export default async function page() {
       />
 
       <div className="Home w-full flex flex-col justify-start items-center">
-        {/* section 0 */}
-        <section className="dragon-section">
+        {/* section 0 - dragon animation, disabled until it's finished
+            (see the DragonPath import note at the top of this file) */}
+        {/* <section className="dragon-section">
           <DragonPath />
-        </section>
+        </section> */}
 
         {/* .d-path was the hand-positioned test rig used to find the
             133% / -43% / -5% alignment above - now ported into
